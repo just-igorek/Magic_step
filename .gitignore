@@ -1,0 +1,48 @@
+# ==================== C++ ====================
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.pdb
+*.idb
+*.ilk
+
+# Папки сборки
+build/
+Debug/
+Release/
+x64/
+out/
+bin/
+obj/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CMakeUserPresets.json
+
+# ==================== IDE ====================
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.swp
+*.swo
+*~
+
+# ==================== OS ====================
+.DS_Store
+Thumbs.db
+
+# ==================== Логи ====================
+*.log
