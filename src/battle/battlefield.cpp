@@ -1,7 +1,6 @@
 #include "battle/battlefield.hpp"
 
 #include <iostream>
-#include <stdexcept>
 
 namespace battle
 {
@@ -19,13 +18,13 @@ Battlefield::Battlefield(std::int32_t width, std::int32_t height)
         return;
     }
 
-    m_cells = std::make_unique<CellRow[]>(static_cast<std::size_t>(m_height));
+    m_cells = new Cell**[static_cast<std::size_t>(m_height)];
     for (std::int32_t y = 0; y < m_height; ++y)
     {
-        m_cells[y] = std::make_unique<std::unique_ptr<Cell>[]>(static_cast<std::size_t>(m_width));
+        m_cells[y] = new Cell*[static_cast<std::size_t>(m_width)];
         for (std::int32_t x = 0; x < m_width; ++x)
         {
-            m_cells[y][x] = std::make_unique<Cell>(x, y);
+            m_cells[y][x] = new Cell(x, y);
         }
     }
 
@@ -34,7 +33,18 @@ Battlefield::Battlefield(std::int32_t width, std::int32_t height)
 
 Battlefield::~Battlefield()
 {
-    // Ячейки высвобождаются членами класса типа unique_ptr; здесь выводится только сообщение.
+    if (m_cells != nullptr)
+{
+    for (std::int32_t y = 0; y < m_height; ++y)
+    {
+        for (std::int32_t x = 0; x < m_width; ++x)
+        {
+            delete m_cells[y][x];     
+        }
+        delete[] m_cells[y];          
+    }
+    delete[] m_cells;                   
+}
     std::cout << "[Battlefield] Destructor: field " << m_width << "x" << m_height << " destroyed\n";
 }
 
@@ -43,9 +53,9 @@ bool Battlefield::IsValidPosition(std::int32_t x, std::int32_t y) const
     return x >= 0 && x < m_width && y >= 0 && y < m_height;
 }
 
-bool Battlefield::PlaceUnit(const std::shared_ptr<Unit>& unit, std::int32_t x, std::int32_t y)
+bool Battlefield::PlaceUnit(Unit* unit, std::int32_t x, std::int32_t y)
 {
-    if (!unit)
+    if (unit == nullptr)
     {
         std::cout << "[Battlefield] Error: null pointer to unit.\n";
         return false;
@@ -58,7 +68,7 @@ bool Battlefield::PlaceUnit(const std::shared_ptr<Unit>& unit, std::int32_t x, s
         return false;
     }
 
-    return m_cells[y][x]->SetUnit(unit);
+    return m_cells[y][x]->SetUnit(unit);   
 }
 
 void Battlefield::RemoveUnit(std::int32_t x, std::int32_t y)
@@ -71,13 +81,13 @@ void Battlefield::RemoveUnit(std::int32_t x, std::int32_t y)
     m_cells[y][x]->RemoveUnit();
 }
 
-Cell& Battlefield::GetCell(std::int32_t x, std::int32_t y) const
+Cell* Battlefield::GetCell(std::int32_t x, std::int32_t y) const
 {
     if (!IsValidPosition(x, y))
     {
-        throw std::out_of_range("Battlefield::GetCell: position is off the field");
+        return nullptr;
     }
-    return *m_cells[y][x];
+    return m_cells[y][x];  
 }
 
 void Battlefield::Print() const
@@ -87,7 +97,7 @@ void Battlefield::Print() const
     {
         for (std::int32_t x = 0; x < m_width; ++x)
         {
-            m_cells[y][x]->Print();
+            m_cells[y][x]->Print();   // -> вместо .
             std::cout << ' ';
         }
         std::cout << '\n';

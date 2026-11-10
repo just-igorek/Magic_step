@@ -17,9 +17,9 @@ Cell::~Cell()
     std::cout << "[Cell] Destructor: cell (" << m_x << "," << m_y << ")\n";
 }
 
-bool Cell::SetUnit(const std::shared_ptr<Unit>& unit)
+bool Cell::SetUnit(Unit* unit)
 {
-    if (!unit)
+    if (unit == nullptr)
     {
         std::cout << "[Cell] Error: null pointer to unit passed.\n";
         return false;
@@ -28,7 +28,7 @@ bool Cell::SetUnit(const std::shared_ptr<Unit>& unit)
     if (!IsEmpty())
     {
         std::cout << "[Cell] Error: cell (" << m_x << "," << m_y
-                  << ") already occupied by a unit '" << m_unit.lock()->GetName() << "'.\n";
+                  << ") already occupied by a unit '" << m_unit->GetName() << "'.\n";
         return false;
     }
 
@@ -38,19 +38,18 @@ bool Cell::SetUnit(const std::shared_ptr<Unit>& unit)
 
 void Cell::RemoveUnit()
 {
-    m_unit.reset();
+    m_unit = nullptr;
 }
 
 void Cell::Print() const
 {
-    const std::shared_ptr<Unit> unit = m_unit.lock();
-    if (!unit)
+    if (IsEmpty())
     {
         std::cout << '.';
     }
     else
     {
-        std::cout << (unit->IsAlive() ? 'U' : 'x');
+        std::cout << (m_unit->IsAlive() ? 'U' : 'x');
     }
 }
 

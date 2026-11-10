@@ -4,7 +4,6 @@
 #include "unit.hpp"
 
 #include <cstdint>
-#include <memory>
 
 namespace battle
 {
@@ -14,12 +13,10 @@ class Battlefield
 private:
     static constexpr std::int32_t MIN_SIZE = 1;
 
-    using CellRow = std::unique_ptr<std::unique_ptr<Cell>[]>;
-
 protected:
     std::int32_t m_width{ 0 };
     std::int32_t m_height{ 0 };
-    std::unique_ptr<CellRow[]> m_cells;  // композиция: поле владеет своими ячейками
+    Cell*** m_cells{ nullptr }; 
 
 public:
     Battlefield() = default;
@@ -33,12 +30,11 @@ public:
 
     [[nodiscard]] bool IsValidPosition(std::int32_t x, std::int32_t y) const;
 
-    bool PlaceUnit(const std::shared_ptr<Unit>& unit, std::int32_t x, std::int32_t y);
+    bool PlaceUnit(Unit* unit, std::int32_t x, std::int32_t y);
 
     void RemoveUnit(std::int32_t x, std::int32_t y);
 
-    // Выбрасывает исключение std::out_of_range, если позиция находится за пределами поля.
-    [[nodiscard]] Cell& GetCell(std::int32_t x, std::int32_t y) const;
+    [[nodiscard]] Cell* GetCell(std::int32_t x, std::int32_t y) const;
 
     [[nodiscard]] auto GetWidth() const
     {
@@ -53,4 +49,4 @@ public:
     void Print() const;
 };
 
-}
+} 
