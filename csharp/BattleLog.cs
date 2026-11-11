@@ -1,18 +1,20 @@
 namespace Battle;
 
-/// Журнал боя. Держит «ресурс» и закрывает его в Dispose(): после выхода из блока using
-/// вызов гарантирован, в отличие от сборки мусора, момент которой неизвестен.
-public sealed class BattleLog : IDisposable
+/// Демонстрация using var и IDisposable для ресурса.
+internal sealed class BattleLog : IDisposable
 {
-    private readonly string _title;
+    private bool _disposed;
 
-    public BattleLog(string title)
+    public void Write(string message)
     {
-        _title = title;
-        Console.WriteLine($"[+] log opened: {_title}");
+        if (_disposed) throw new ObjectDisposedException(nameof(BattleLog));
+        Console.WriteLine($"[BattleLog] {message}");
     }
 
-    public void Write(string line) => Console.WriteLine($"    {line}");
-
-    public void Dispose() => Console.WriteLine($"[-] log closed: {_title}");
+    public void Dispose()
+    {
+        if (_disposed) return;
+        _disposed = true;
+        Console.WriteLine("[BattleLog] resource released by using");
+    }
 }
