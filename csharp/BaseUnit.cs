@@ -46,8 +46,6 @@ public abstract partial class BaseUnit
         public string Specialization{get;set;}
         public string Description{get;}
     }
-    public string GetSpecializationForDemo() => Profile.Specialization;
-    public BaseUnit ShallowCopyForDemo() => (BaseUnit)MemberwiseClone();
 }
 
 public interface ICombatant : IComparable<ICombatant>
