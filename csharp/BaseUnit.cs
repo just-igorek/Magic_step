@@ -46,4 +46,38 @@ public abstract partial class BaseUnit
         public string Specialization{get;set;}
         public string Description{get;}
     }
+    public string GetSpecializationForDemo() => Profile.Specialization;
+    public BaseUnit ShallowCopyForDemo() => (BaseUnit)MemberwiseClone();
+}
+
+public interface ICombatant : IComparable<ICombatant>
+{
+    string CombatAction();
+    void Support(BaseUnit target);
+}
+public sealed class InvalidCombatActionException : Exception
+{
+    public InvalidCombatActionException(string message) : base(message) { }
+}
+public interface IAbilityStrategy
+{
+    string Apply(BaseUnit user, BaseUnit target);
+}
+public sealed class PoisonStrategy : IAbilityStrategy
+{
+    public string Apply(BaseUnit user, BaseUnit target)
+    {
+        if (!user.IsAlive || !target.IsAlive) throw new InvalidCombatActionException("Poison requires living units");
+        target.TakeDamage(10);
+        return $"{user.Name} applies poison to {target.Name}";
+    }
+}
+public sealed class RegenerationStrategy : IAbilityStrategy
+{
+    public string Apply(BaseUnit user, BaseUnit target)
+    {
+        if (!user.IsAlive || !target.IsAlive) throw new InvalidCombatActionException("Regeneration requires living units");
+        target.Heal(10);
+        return $"{user.Name} restores {target.Name}";
+    }
 }
