@@ -49,6 +49,7 @@ public:
 
     // Наглядно демонстрирует общую вложенную часть при обычном копировании.
     [[nodiscard]] std::shared_ptr<UnitProfile> ShareProfile() const noexcept { return m_profile; }
+    std::string BindingLabel() const { return "BaseUnit binding"; }
 
 protected:
     IdType m_id{0};
