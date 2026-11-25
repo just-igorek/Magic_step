@@ -1,13 +1,12 @@
 namespace Battle;
 
-public sealed class Warrior : BaseUnit
+public sealed class Warrior : BaseUnit, ICombatant
 {
     public Warrior(uint id, string name, int hp, int x, int y)
         : base(id, name, hp, x, y, "front line", "close combat specialist")
     {
         Console.WriteLine("[Warrior] constructor");
     }
-
     private Warrior(Warrior other)
         : base(other.Id, other.Name, other.MaxHealth, other.X, other.Y,
                other.Profile.Specialization, other.Profile.Description)
@@ -15,22 +14,22 @@ public sealed class Warrior : BaseUnit
         CurrentHealth = other.CurrentHealth;
         if (!other.IsAlive) TakeDamage(MaxHealth);
     }
-
     public override string ClassName => "Warrior";
     public override string Attack() => $"{Name} strikes with a sword";
-
     public override string Describe()
     {
         var builder = new System.Text.StringBuilder(base.Describe());
         AppendProfile(builder);
         return builder.ToString();
     }
-
     public override BaseUnit Clone() => new Warrior(this);
-
-    public Warrior RenameAndReturn(string name)
+    public Warrior RenameAndReturn(string name) { this.Rename(name); return this; }
+    public string CombatAction() => Attack();
+    public void Support(BaseUnit target)
     {
-        this.Rename(name);
-        return this;
+        if (!IsAlive || !target.IsAlive) throw new InvalidCombatActionException("Support requires living units");
+        target.Heal(5);
     }
+    public int CompareTo(ICombatant? other) => other is null ? 1 : string.Compare(CombatAction(), other.CombatAction(), StringComparison.Ordinal);
+    public new string BindingLabel() => "Warrior binding";
 }
