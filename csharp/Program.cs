@@ -17,7 +17,7 @@ internal static class Program
         };
         foreach (BaseUnit unit in squad) { Console.WriteLine(unit.Describe()); Console.WriteLine(unit.Attack()); }
 
-        Console.WriteLine("\\n===== SHALLOW AND DEEP COPY =====");
+        Console.WriteLine("\n===== SHALLOW AND DEEP COPY =====");
         var source = new Warrior(5, "Guard", 100, 0, 1);
         var shallow = (Warrior)source.ShallowCopyForDemo();
         shallow.ChangeSpecialization("shared specialization");
@@ -27,7 +27,7 @@ internal static class Program
         Console.WriteLine($"Source profile after Clone(): {source.GetSpecializationForDemo()}");
         Console.WriteLine($"Clone profile: {((Warrior)deep).GetSpecializationForDemo()}");
 
-        Console.WriteLine("\\n===== STRINGS, this, EQUALITY =====");
+        Console.WriteLine("\n===== STRINGS, this, EQUALITY =====");
         string label = source.Name + " the defender";
         int index = label.IndexOf("defender", StringComparison.Ordinal);
         Console.WriteLine($"Substring: {label.Substring(index)}");
@@ -38,12 +38,12 @@ internal static class Program
         Console.WriteLine($"Equals by content: {source.Equals(same)}");
         Console.WriteLine($"Hash codes equal: {source.GetHashCode() == same.GetHashCode()}");
 
-        Console.WriteLine("\\n===== STATIC MEMBERS =====");
+        Console.WriteLine("\n===== STATIC MEMBERS =====");
         Console.WriteLine($"Created objects: {BaseUnit.CreatedCount}");
-        Console.WriteLine("\\n===== USING =====");
+        Console.WriteLine("\n===== USING =====");
         using var log = new BattleLog();
         log.Write("The demonstration is running.");
-        Console.WriteLine("\\n===== BATTLEFIELD =====");
+        Console.WriteLine("\n===== BATTLEFIELD =====");
         var field = new Battlefield(4, 2);
         field.PlaceUnit(source, 0, 0);
         field.PlaceUnit(new Archer(6, "Ranger", 70, 1, 1), 1, 1);
@@ -53,7 +53,7 @@ internal static class Program
 
     private static void RunLab05()
     {
-        Console.WriteLine("\\n===== LAB 05 =====");
+        Console.WriteLine("\n===== LAB 05 =====");
         var warrior = new Warrior(20, "Sentinel", 100, 0, 0);
         var healer = new Healer(21, "Medic", 80, 1, 0);
         BaseUnit baseRef = warrior;
