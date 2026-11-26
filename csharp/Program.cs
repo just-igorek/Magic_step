@@ -7,32 +7,27 @@ internal static class Program
     private static void Main()
     {
         Console.OutputEncoding = Encoding.UTF8;
-        RunLab05();
-    }
-
-    private static void RunLab05()
-    {
         Console.WriteLine("===== LAB 05 =====");
 
         var warrior = new Warrior(20, "Sentinel", 100, 0, 0);
         var healer = new Healer(21, "Medic", 80, 1, 0);
 
-        // Early binding: the non-virtual method is selected by the reference type.
+        // Раннее связывание: невиртуальный метод выбирается на основе типа ссылки.
         BaseUnit baseRef = warrior;
 
         Console.WriteLine(
             $"Early binding: {baseRef.BindingLabel()} / {warrior.BindingLabel()}");
 
-        // Late binding: the virtual method is selected by the actual object type.
+        // Позднее связывание: виртуальный метод выбирается в зависимости от фактического типа объекта.
         Console.WriteLine($"Late binding: {baseRef.Attack()}");
 
-        // Interface-based polymorphism.
+        // Полиморфизм на основе интерфейсов.
         ICombatant actor = healer;
 
         Console.WriteLine($"Interface dispatch: {actor.CombatAction()}");
         actor.Support(warrior);
 
-        // IComparable implementation and sorting.
+        // Реализация IComparable и сортировка.
         var combatants = new List<ICombatant>
         {
             warrior,
@@ -44,7 +39,7 @@ internal static class Program
         Console.WriteLine(
             $"Sorted combatants: {string.Join(", ", combatants.Select(unit => unit.CombatAction()))}");
 
-        // Runtime type checking and safe casts.
+        // Проверка типов во время выполнения и безопасное приведение типов.
         BaseUnit inspected = healer;
 
         if (inspected is Healer typed)
@@ -55,14 +50,14 @@ internal static class Program
         var cast = inspected as Healer;
         Console.WriteLine($"as: {cast?.ClassName}");
 
-        // Strategy pattern: change the ability at runtime.
+        // изменение функциональности во время выполнения программы.
         IAbilityStrategy strategy = new PoisonStrategy();
         Console.WriteLine(strategy.Apply(warrior, healer));
 
         strategy = new RegenerationStrategy();
         Console.WriteLine(strategy.Apply(healer, warrior));
 
-        // Custom exception and exception handling.
+        // Пользовательские исключения и обработка исключений.
         healer.TakeDamage(healer.MaxHealth);
 
         try
@@ -82,4 +77,7 @@ internal static class Program
             Console.WriteLine("finally: завершение обработки действия");
         }
     }
+
+    
+        
 }

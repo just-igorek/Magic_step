@@ -3,9 +3,7 @@ namespace Battle;
 public class Healer : BaseUnit, ICombatant
 {
     public Healer(uint id, string name, int hp, int x, int y)
-        : base(id, name, hp, x, y, "support", "restores allies' health")
-    {
-    }
+        : base(id, name, hp, x, y, "support", "restores allies' health"){}
 
     private Healer(Healer other)
         : base(
@@ -24,24 +22,19 @@ public class Healer : BaseUnit, ICombatant
             TakeDamage(MaxHealth);
         }
     }
-
     public override string ClassName => "Healer";
-
     public override string Attack()
     {
         return $"{Name} uses a staff strike";
     }
-
     public override BaseUnit Clone()
     {
         return new Healer(this);
     }
-
     public string CombatAction()
     {
         return Attack();
     }
-
     public void Support(BaseUnit target)
     {
         if (!IsAlive || !target.IsAlive)
@@ -51,7 +44,6 @@ public class Healer : BaseUnit, ICombatant
 
         target.Heal(15);
     }
-
     public int CompareTo(ICombatant? other)
     {
         if (other is null)

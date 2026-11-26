@@ -27,12 +27,10 @@ public sealed class Warrior : BaseUnit, ICombatant
     }
 
     public override string ClassName => "Warrior";
-
     public override string Attack()
     {
         return $"{Name} strikes with a sword";
     }
-
     public override string Describe()
     {
         var builder = new System.Text.StringBuilder(base.Describe());
@@ -41,24 +39,20 @@ public sealed class Warrior : BaseUnit, ICombatant
 
         return builder.ToString();
     }
-
     public override BaseUnit Clone()
     {
         return new Warrior(this);
     }
-
     public Warrior RenameAndReturn(string name)
     {
         this.Rename(name);
 
         return this;
     }
-
     public string CombatAction()
     {
         return Attack();
     }
-
     public void Support(BaseUnit target)
     {
         if (!IsAlive || !target.IsAlive)
@@ -68,7 +62,6 @@ public sealed class Warrior : BaseUnit, ICombatant
 
         target.Heal(5);
     }
-
     public int CompareTo(ICombatant? other)
     {
         if (other is null)
@@ -81,7 +74,6 @@ public sealed class Warrior : BaseUnit, ICombatant
             other.CombatAction(),
             StringComparison.Ordinal);
     }
-
     public new string BindingLabel()
     {
         return "Warrior binding";
