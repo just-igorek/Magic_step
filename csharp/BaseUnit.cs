@@ -1,8 +1,6 @@
 namespace Battle;
 
-/// <summary>
 /// Абстрактная боевая единица.
-/// </summary>
 public abstract partial class BaseUnit
 {
     private static int _createdCount;
@@ -35,37 +33,26 @@ public abstract partial class BaseUnit
     }
 
     public uint Id { get; }
-
     public string Name { get; protected set; }
-
     public int MaxHealth { get; }
-
     public int Health => CurrentHealth;
-
     public int X { get; private set; }
-
     public int Y { get; private set; }
-
     public bool IsAlive { get; private set; }
-
     protected UnitProfile Profile { get; set; }
 
     public abstract string Attack();
-
     public abstract BaseUnit Clone();
-
     public abstract string ClassName { get; }
 
     public virtual string Describe()
     {
         return $"{ClassName} '{Name}' HP={Health}/{MaxHealth} at ({X},{Y})";
     }
-
     public string BindingLabel()
     {
         return "BaseUnit binding";
     }
-
     public void TakeDamage(int amount)
     {
         if (amount <= 0 || !IsAlive)
@@ -80,7 +67,6 @@ public abstract partial class BaseUnit
             IsAlive = false;
         }
     }
-
     public void Heal(int amount)
     {
         if (amount > 0 && IsAlive)
@@ -88,7 +74,6 @@ public abstract partial class BaseUnit
             CurrentHealth = Math.Min(MaxHealth, CurrentHealth + amount);
         }
     }
-
     public void MoveTo(int x, int y)
     {
         if (IsAlive)
@@ -122,7 +107,6 @@ public abstract partial class BaseUnit
     {
         return (BaseUnit)MemberwiseClone();
     }
-
     public override bool Equals(object? obj)
     {
         return obj is BaseUnit other
@@ -130,12 +114,10 @@ public abstract partial class BaseUnit
             && ClassName == other.ClassName
             && Name == other.Name;
     }
-
     public override int GetHashCode()
     {
         return HashCode.Combine(Id, ClassName, Name);
     }
-
     protected void AppendProfile(System.Text.StringBuilder builder)
     {
         builder.Append($" | {Profile.Specialization}: {Profile.Description}");
@@ -158,7 +140,6 @@ public abstract partial class BaseUnit
 public interface ICombatant : IComparable<ICombatant>
 {
     string CombatAction();
-
     void Support(BaseUnit target);
 }
 
