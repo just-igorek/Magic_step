@@ -11,20 +11,8 @@ Warrior::Warrior()
     std::cout << "[Warrior] default constructor\n";
 }
 
-Warrior::Warrior(
-    IdType id,
-    std::string_view name,
-    std::int32_t hp,
-    std::int32_t x,
-    std::int32_t y)
-    : BaseUnit(
-          id,
-          name,
-          hp,
-          x,
-          y,
-          "front line",
-          "close combat specialist")
+Warrior::Warrior(IdType id, std::string_view name, std::int32_t hp, std::int32_t x, std::int32_t y) : 
+BaseUnit(id, name, hp, x, y, "front line", "close combat specialist")
 {
     std::cout << "[Warrior] parameterized constructor\n";
 }
