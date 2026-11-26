@@ -9,24 +9,24 @@
 
 using namespace battle;
 
-static void DemonstrateLab05()
+int main()
 {
     std::cout << "===== LAB 05 =====\n";
 
     Warrior warrior(20, "Sentinel", 100, 0, 0);
     Healer healer(21, "Medic", 80, 1, 0);
 
-    // Early binding: the non-virtual method is selected by the reference type.
+    // Раннее связывание: невиртуальный метод выбирается на основе типа ссылки.
     BaseUnit& base = warrior;
 
     std::cout << "Early binding: "
               << base.BindingLabel() << " / "
               << warrior.BindingLabel() << '\n';
 
-    // Late binding: the virtual method is selected by the actual object type.
+    // Позднее связывание: виртуальный метод выбирается в зависимости от фактического типа объекта.
     std::cout << "Late binding: " << base.Attack() << '\n';
 
-    // Interface-based polymorphism.
+    // Полиморфизм на основе интерфейсов.
     ICombatant& actor = healer;
 
     std::cout << "Interface dispatch: "
@@ -34,7 +34,7 @@ static void DemonstrateLab05()
 
     actor.Support(warrior);
 
-    // Sorting objects through the interface.
+    // Сортировка объектов через интерфейс.
     std::vector<const ICombatant*> combatants{&warrior, &healer};
 
     std::sort(
@@ -52,7 +52,7 @@ static void DemonstrateLab05()
         std::cout << combatant->CombatAction() << '\n';
     }
 
-    // Runtime type identification and safe downcasting.
+    // Идентификация типа во время выполнения и безопасное приведение к производному типу.
     BaseUnit& inspected = healer;
 
     if (auto* typed = dynamic_cast<Healer*>(&inspected))
@@ -60,7 +60,7 @@ static void DemonstrateLab05()
         std::cout << "dynamic_cast: " << typed->GetName() << '\n';
     }
 
-    // Strategy pattern: change the ability at runtime.
+    // изменение функциональности во время выполнения программы.
     std::unique_ptr<IAbilityStrategy> strategy =
         std::make_unique<PoisonStrategy>();
 
@@ -70,7 +70,7 @@ static void DemonstrateLab05()
 
     std::cout << strategy->Apply(healer, warrior) << '\n';
 
-    // Custom exception and exception handling.
+    // Пользовательское исключение и обработка исключений.
     healer.TakeDamage(healer.GetMaxHealth());
 
     try
@@ -85,10 +85,5 @@ static void DemonstrateLab05()
     {
         std::cout << "General catch: " << error.what() << '\n';
     }
-}
-
-int main()
-{
-    DemonstrateLab05();
     return 0;
 }
